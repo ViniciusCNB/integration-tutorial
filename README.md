@@ -292,4 +292,4 @@ O front-end irá consumir os dados da nossa API e exibi-los em um gráfico.
     ```bash
     npm run dev
     ```
-    Acesse `http://localhost:3000` em seu navegador para ver o resultado.
+    Acesse `http://localhost:5173` em seu navegador para ver o resultado.
