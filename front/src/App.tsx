@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import BarChart from "./components/BarChart";
+import type { VendasData } from "./types";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [vendasData, setVendasData] = useState<VendasData[]>([]);
+
+  useEffect(() => {
+    axios
+      .get<VendasData[]>("http://127.0.0.1:8000/vendas")
+      .then((response) => {
+        setVendasData(response.data);
+      })
+      .catch((error) => {
+        console.error("Houve um erro ao buscar os dados:", error);
+      });
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <main className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
+      <Card className="w-full max-w-3xl shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold text-center">Relatório de Vendas por Produto</CardTitle>
+        </CardHeader>
+        <CardContent className="flex justify-center PX-0">
+          <BarChart data={vendasData.slice(0, 10)} />
+        </CardContent>
+      </Card>
+    </main>
+  );
 }
 
-export default App
+export default App;
